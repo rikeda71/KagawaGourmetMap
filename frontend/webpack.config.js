@@ -6,16 +6,36 @@ module.exports = {
   context: path.join(__dirname, "/src"),
   entry: "./index.tsx",
   module: {
-    rules: [{
-      test: /\.(j|t)sx?$/,
-      exclude: /(node_modules|bower_components)/,
-      use: [{
-        loader: 'babel-loader',
-        options: {
-          presets: ['@babel/preset-react', '@babel/preset-env', '@babel/preset-typescript']
-        }
-      }]
-    }]
+     rules: [
+        // CSS
+         {
+           test: /\.css$/i,
+           use: [
+            'style-loader',
+            {
+              loader: 'css-loader',
+              options: {
+                url: false
+              }
+            }
+           ]
+         },
+         {
+           test: /\.png$/,
+           use: 'url-loader'
+         },
+       // js, jsx, ts, tsx
+      {
+        test: /\.(j|t)sx?$/,
+        exclude: /(node_modules|bower_components)/,
+        use: [{
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-react', '@babel/preset-env', '@babel/preset-typescript']
+          }
+        }]
+      },
+    ]
   },
   devServer: {
     contentBase: path.join(__dirname, 'dist'),
@@ -33,6 +53,6 @@ module.exports = {
     new webpack.optimize.UglifyJsPlugin({mangle: false, sourceMap: false}),
   ],
   resolve: {
-    extensions: [".js", ".jsx", ".ts", ".tsx"]
+    extensions: [".js", ".jsx", ".ts", ".tsx"],
   }
 };

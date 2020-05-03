@@ -33,9 +33,9 @@ jobs:
         key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
         restore-keys: |
           ${{ runner.os }}-node-
-          
+
     - run: |
-        cd frontend/ && npm ci && pwd && ls -a && npm run build-storybook
+        cd frontend/ && npm ci && npm run build-storybook
 
     - name: Deploy storybook
       uses: peaceiris/actions-gh-pages@v3

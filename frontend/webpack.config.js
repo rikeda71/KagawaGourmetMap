@@ -4,7 +4,7 @@ var path = require('path');
 
 module.exports = {
   context: path.join(__dirname, "/src"),
-  entry: "./index.tsx",
+  entry: ['@babel/polyfill', './index.tsx'],
   module: {
      rules: [
         // CSS

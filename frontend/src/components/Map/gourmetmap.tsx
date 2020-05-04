@@ -1,11 +1,12 @@
 import React from "react";
 import L, { marker } from 'leaflet';
 import "leaflet/dist/leaflet.css";
-import { Map, Marker, Popup, TileLayer } from "react-leaflet";
+import { Map, TileLayer } from "react-leaflet";
 import { LatLngExpression } from "leaflet";
 import iconRetinaUrl from 'leaflet/dist/images/marker-icon-2x.png'
 import iconUrl from 'leaflet/dist/images/marker-icon.png'
 import shadowUrl from 'leaflet/dist/images/marker-shadow.png'
+import {Markers, MarkerType} from "./marker";
 
 const mapStyle: React.CSSProperties = {
     height: "70vh",
@@ -27,37 +28,12 @@ const rewriteIconState = () => {
     /* eslint-disable */
 }
 
-export type MarkerType = {
-    position: LatLngExpression,
-    popup: string
-};
-
-type MarkersType = {
-    markers: Array<MarkerType>
-}
-
 type GourmetMapProps = {
     zoomValue: number,
     centorPosition: LatLngExpression,
     markers: Array<MarkerType>
 }
 
-const MyMarker: React.FC<MarkerType> = (props) => {
-    return (
-      <Marker position={props.position} key={props.popup}>
-          <Popup>{props.popup}</Popup>
-      </Marker>
-    )
-}
-
-const Markers: React.FC<MarkersType> = (props) => {
-    const markers: Array<MarkerType> = props.markers;
-    return (
-        <div id="markers">
-            {markers.map((marker, i) => {return (<MyMarker {...marker} key={i} />)})}
-        </div>
-    )
-}
 
 const GourmetMap : React.FC<GourmetMapProps> = (props) => {
     const zoomValue = props.zoomValue;

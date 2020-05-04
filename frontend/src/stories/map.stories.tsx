@@ -5,7 +5,7 @@ import { withInfo } from "@storybook/addon-info";
 import { withKnobs, text, boolean } from "@storybook/addon-knobs";
 import { action } from "@storybook/addon-actions";
 
-import GourmetMap from "../components/map";
+import GourmetMap from "../components/Map/gourmetmap";
 
 
 const components = storiesOf("Components", module);

@@ -15,9 +15,9 @@ module.exports = ({ config }) => {
         options: {
           transpileOnly: true
         }
-      }
+      },
     ]
   });
-  config.resolve.extensions.push(".ts", ".tsx");
+  config.resolve.extensions.push(".js", ".jsx", ".ts", ".tsx");
   return config;
 };

@@ -1,8 +1,7 @@
-import React from "react";
-import L, { marker } from 'leaflet';
+import React, { useState, createRef, useRef } from "react";
+import L, { LatLng, LocationEvent } from 'leaflet';
 import "leaflet/dist/leaflet.css";
 import { Map, TileLayer } from "react-leaflet";
-import { LatLngExpression } from "leaflet";
 import iconRetinaUrl from 'leaflet/dist/images/marker-icon-2x.png'
 import iconUrl from 'leaflet/dist/images/marker-icon.png'
 import shadowUrl from 'leaflet/dist/images/marker-shadow.png'
@@ -30,25 +29,30 @@ const rewriteIconState = () => {
 
 type GourmetMapProps = {
     zoomValue: number,
-    centorPosition: LatLngExpression,
-    markers: Array<MarkerType>
+    markers: Array<MarkerType>,
+    centerMarker?: MarkerType,
 }
 
 
 const GourmetMap : React.FC<GourmetMapProps> = (props) => {
     const zoomValue = props.zoomValue;
-    const centorPosition = props.centorPosition;
+    const centorPosition = props.centerMarker.position;
 
     rewriteIconState();
 
     return (
         <div id="map">
-            <Map zoom={zoomValue} center={centorPosition} style={mapStyle}>
+            <Map
+              zoom={zoomValue}
+              center={centorPosition}
+              style={mapStyle}
+             >
                 <TileLayer
                 url = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 attribution="&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
                 />
-            <Markers markers={props.markers} />
+            <Markers markers={props.markers}  />
+            {!!props.centerMarker && <Markers markers={[props.centerMarker]} />}
             </Map>
         </div>
     )

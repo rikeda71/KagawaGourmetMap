@@ -7,23 +7,23 @@ module.exports = {
   entry: ['@babel/polyfill', './index.tsx'],
   module: {
      rules: [
-        // CSS
-         {
-           test: /\.css$/i,
-           use: [
-            'style-loader',
-            {
-              loader: 'css-loader',
-              options: {
-                url: false
-              }
+      // CSS
+        {
+          test: /\.css$/i,
+          use: [
+          'style-loader',
+          {
+            loader: 'css-loader',
+            options: {
+              url: false
             }
-           ]
-         },
-         {
-           test: /\.png$/,
-           use: 'url-loader'
-         },
+          }
+          ]
+        },
+        {
+          test: /\.(png|svg)$/,
+          use: 'url-loader'
+        },
        // js, jsx, ts, tsx
       {
         test: /\.(j|t)sx?$/,

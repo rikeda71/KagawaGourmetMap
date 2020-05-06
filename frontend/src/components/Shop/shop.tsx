@@ -58,7 +58,7 @@ export const Shop: React.FC<ShopType> = (props) => {
           key={props.shopId}
           className={classes.card}
         >
-            <Card>
+            <Card key={props.shopId}>
                 <CardContent>
                     <Typography variant="h5" component="h1">
                         {props.name}

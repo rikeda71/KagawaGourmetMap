@@ -1,6 +1,7 @@
 import React from "react";
 import { Marker, Popup } from "react-leaflet";
-import L from "leaflet";
+import L, { marker } from "leaflet";
+import cake from "../../assets/cake-red.png";
 
 export type MarkerType = {
     position: L.LatLng,
@@ -12,27 +13,43 @@ export type MarkerType = {
     popup: string
 };
 
+const cakeIcon: L.Icon = new L.Icon(
+    {iconUrl: require("../../assets/cake-red.png"),
+     iconSize: [30, 30],
+     iconAnchor: [20, 30],
+     popupAnchor: [-2, -15],
+    }
+);
+const kindToIcon: Map<string, L.Icon> = new Map([
+    ["cake-red", cakeIcon]
+]);
 
 const MyMarker: React.FC<MarkerType> = (props) => {
-    const cakeIcon: L.Icon = new L.Icon(
-        {iconUrl: require("../../assets/cake-red.png"), iconSize: [30, 30], iconAnchor: [30, 30]}
-    );
-    const kindToIcon: Map<string, L.Icon> = new Map([
-        ["cake-red", cakeIcon]
-    ]);
-    const markerIcon = kindToIcon.has(props.iconKind) ? kindToIcon.get(props.iconKind) : null;
-    return (
-      <Marker
-        position={props.position}
-        attribution={props.attribution}
-        draggable={props.draggable}
-        icon={cakeIcon}
-        zIndexOffset={props.zIndexOffset}
-        opacity={props.opacity}
-       >
-          <Popup>{props.popup}</Popup>
-      </Marker>
-    )
+    let markerIcon;
+    if (kindToIcon.has(props.iconKind)) {
+        markerIcon = <Marker
+                       position={props.position}
+                       attribution={props.attribution}
+                       draggable={props.draggable}
+                       icon={kindToIcon.get(props.iconKind)}
+                       zIndexOffset={props.zIndexOffset}
+                       opacity={props.opacity}
+                     >
+                        <Popup>{props.popup}</Popup>
+                    </Marker>;
+    } else {
+        markerIcon = <Marker
+                       position={props.position}
+                       attribution={props.attribution}
+                       draggable={props.draggable}
+                       zIndexOffset={props.zIndexOffset}
+                       opacity={props.opacity}
+                     >
+                        <Popup>{props.popup}</Popup>
+                    </Marker>;
+    }
+
+    return (markerIcon);
 }
 
 export const Markers: React.FC<{markers: Array<MarkerType>}> = (props) => {

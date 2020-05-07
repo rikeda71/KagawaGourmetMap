@@ -5,7 +5,7 @@ import Shops from "./Shop/shops";
 import { ShopType } from "./Shop/shop";
 import GourmetMap from "./Map/gourmetmap";
 import { MarkerType } from "./Map/marker";
-import { nowIcon } from "./Map/icon";
+import { Container, Grid } from "@material-ui/core";
 
 type MainViewProps = {
     request_url: string,
@@ -27,28 +27,54 @@ const MainView: React.FC<MainViewProps> = (props) => {
         fetchData();
     }, []);
 
+    let geoLat = 0;
+    let geoLng = 0;
+    let sumCnt = 0;
     const markers: Array<MarkerType> = shops.map((shop) => {
+        if (shop.geocode !== null) {
+            geoLat += shop.geocode.lat;
+            geoLng += shop.geocode.lng;
+            sumCnt++;
+        }
         return {
             position: L.latLng(shop.geocode.lat, shop.geocode.lng),
             popup: shop.name,
+            iconKind: "cake-red"
         };
     });
 
+    geoLat /= sumCnt > 0 ? sumCnt : 1;
+    geoLng /= sumCnt > 0 ? sumCnt : 1;
+
     // 仮の値
+    console.log(geoLat, geoLng);
     const centerMarker: MarkerType = {
-        position: L.latLng(34.327811, 134.07525),
+        position: L.latLng([geoLat, geoLng]),
         popup: "現在地",
-        iconKind: "cake-red"
     }
 
     return (
         <div id="main">
-          <Shops shops={shops} />
-          <GourmetMap
-              zoomValue={7}
-              markers={markers}
-              centerMarker={centerMarker}
-          />
+            <Container maxWidth="xl">
+                <Grid
+                  container
+                  direction="row"
+                  justify="center"
+                  alignItems="center"
+                  spacing={2}
+                >
+                <Grid item xs={3}>
+                    <Shops shops={shops} />
+                </Grid>
+                <Grid item xs={9}>
+                    <GourmetMap
+                        zoomValue={13}
+                        markers={markers}
+                        centerMarker={centerMarker}
+                    />
+                </Grid>
+                </Grid>
+            </Container>
         </div>
     )
 }

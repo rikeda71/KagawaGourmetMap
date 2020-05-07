@@ -1,7 +1,7 @@
 import React from "react";
 import { Marker, Popup } from "react-leaflet";
-import L, { marker } from "leaflet";
-import cake from "../../assets/cake-red.png";
+import L  from "leaflet";
+import cakeImage from "../../assets/cake-red.png";
 
 export type MarkerType = {
     position: L.LatLng,
@@ -14,7 +14,7 @@ export type MarkerType = {
 };
 
 const cakeIcon: L.Icon = new L.Icon(
-    {iconUrl: require("../../assets/cake-red.png"),
+    {iconUrl: cakeImage,
      iconSize: [30, 30],
      iconAnchor: [20, 30],
      popupAnchor: [-2, -15],

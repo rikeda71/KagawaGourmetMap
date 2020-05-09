@@ -12,46 +12,33 @@ type MainViewProps = {
     params?: {query?: string}
 }
 
-const MainView: React.FC<MainViewProps> = (props) => {
-    const url = props.request_url;
-    const params = props.params;
-    const [shops, setShops] = useState<Array<ShopType>>([]);
-
-    useEffect(() => {
-        const fetchData = async () => {
-            const result = await axios.get<Array<ShopType>>(
-                url + "/shop", {params: typeof params !== "undefined" ? params: null }
-            )
-            setShops(result.data);
-        }
-        fetchData();
-    }, []);
-
-    let geoLat = 0;
-    let geoLng = 0;
-    let sumCnt = 0;
-    const markers: Array<MarkerType> = shops.map((shop) => {
-        if (shop.geocode !== null) {
-            geoLat += shop.geocode.lat;
-            geoLng += shop.geocode.lng;
-            sumCnt++;
-        }
+function getMarkerInfo(shops: Array<ShopType>) {
+    const markers = shops.map(shop => {
         return {
             position: L.latLng(shop.geocode.lat, shop.geocode.lng),
             popup: shop.name,
             iconKind: "cake-red"
         };
     });
+    return markers;
+}
 
-    geoLat /= sumCnt > 0 ? sumCnt : 1;
-    geoLng /= sumCnt > 0 ? sumCnt : 1;
+const MainView: React.FC<MainViewProps> = (props) => {
+    const url = props.request_url;
+    const params = props.params;
+    const [shops, setShops] = useState<Array<ShopType>>([]);
+    const [markers, setMarkers] = useState<Array<MarkerType>>([]);
 
-    // 仮の値
-    console.log(geoLat, geoLng);
-    const centerMarker: MarkerType = {
-        position: L.latLng([geoLat, geoLng]),
-        popup: "現在地",
-    }
+
+    useEffect(() => {
+        const fetchData = async () => {
+            await axios.get<Array<ShopType>>(
+                url + "/shop", {params: typeof params !== "undefined" ? params: null }
+            )
+            .then(res => {setShops(res.data);});
+            }
+        fetchData();
+    }, []);
 
     return (
         <div id="main">
@@ -63,16 +50,17 @@ const MainView: React.FC<MainViewProps> = (props) => {
                   alignItems="center"
                   spacing={2}
                 >
-                <Grid item xs={3}>
-                    <Shops shops={shops} />
-                </Grid>
-                <Grid item xs={9}>
-                    <GourmetMap
-                        zoomValue={13}
-                        markers={markers}
-                        centerMarker={centerMarker}
-                    />
-                </Grid>
+                    <Grid item xs={3}>
+                        <Shops shops={shops} key="shops"/>
+                    </Grid>
+                    <Grid item xs={9}>
+                        <GourmetMap
+                            zoomValue={13}
+                            markers={markers}
+                            setMarkers={setMarkers}
+                            parentShops={shops}
+                        />
+                    </Grid>
                 </Grid>
             </Container>
         </div>

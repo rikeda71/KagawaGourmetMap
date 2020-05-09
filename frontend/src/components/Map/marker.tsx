@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Marker, Popup } from "react-leaflet";
 import L  from "leaflet";
+import { objectSort } from "../../helper/objectSort";
 import cakeImage from "../../assets/cake-red.png";
 
 export type MarkerType = {
@@ -52,11 +53,19 @@ const MyMarker: React.FC<MarkerType> = (props) => {
     return (markerIcon);
 }
 
-export const Markers: React.FC<{markers: Array<MarkerType>}> = (props) => {
+export const Markers: React.FC<{markers: Array<MarkerType>, centerPosition: L.LatLng}> = (props) => {
     const markers: Array<MarkerType> = props.markers;
+    const [centerPosition, setCenterPosition] = useState<L.LatLng>(L.latLng([0, 0]));
+
+    useEffect(() => {
+        if (JSON.stringify(objectSort(props.centerPosition)) !== JSON.stringify(objectSort(centerPosition))) {
+            setCenterPosition(() => {return props.centerPosition});
+        }
+    });
     return (
         <div id="markers">
             {markers.map((marker, i) => {return (<MyMarker {...marker} key={i} />)})}
+            <MyMarker position={centerPosition} popup="現在地" key="currentPos"/>
         </div>
     )
 }

@@ -4,19 +4,19 @@ module.exports = ({ config }) => {
     test: /\.(ts|tsx)$/,
     use: [
       {
-        loader: require.resolve("react-docgen-typescript-loader")
+        loader: require.resolve("react-docgen-typescript-loader"),
       },
       {
-        loader: require.resolve('@storybook/addon-storysource/loader'),
-        options: { parser: 'typescript' }
+        loader: require.resolve("@storybook/addon-storysource/loader"),
+        options: { parser: "typescript" },
       },
       {
-        loader: require.resolve('ts-loader'),
+        loader: require.resolve("ts-loader"),
         options: {
-          transpileOnly: true
-        }
+          transpileOnly: true,
+        },
       },
-    ]
+    ],
   });
   config.resolve.extensions.push(".js", ".jsx", ".ts", ".tsx");
   return config;

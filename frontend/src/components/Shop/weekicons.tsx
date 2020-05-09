@@ -17,22 +17,32 @@ import SecondaryFriday from "../../assets/secondary-friday.png";
 import SecondarySaturday from "../../assets/secondary-saturday.png";
 
 const weekIcons = (times: Array<DateType>) => {
-    const weekNames = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"]
-    const grayIcons = [GraySunday, GrayMonday, GrayTuesday, GrayWednesday, GrayThursday, GrayFriday, GraySaturday];
-    const secondaryIcons = [SecondarySunday, SecondaryMonday, SecondaryTuesday, SecondaryWednesday, SecondaryThursday, SecondaryFriday, SecondarySaturday];
-    const icons = Object.assign([], grayIcons);
-    if (!times) {return weekIcons;}
-    times.forEach((time) => {
-        let i = weekNames.indexOf(time.day);
-        icons[i] = secondaryIcons[i];
-    })
-    return icons.map((icon) => {return <WeekIcon icon={icon} />});
-}
+  const weekNames = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
+  const grayIcons = [GraySunday, GrayMonday, GrayTuesday, GrayWednesday, GrayThursday, GrayFriday, GraySaturday];
+  const secondaryIcons = [
+    SecondarySunday,
+    SecondaryMonday,
+    SecondaryTuesday,
+    SecondaryWednesday,
+    SecondaryThursday,
+    SecondaryFriday,
+    SecondarySaturday,
+  ];
+  const icons = Object.assign([], grayIcons);
+  if (!times) {
+    return weekIcons;
+  }
+  times.forEach((time) => {
+    let i = weekNames.indexOf(time.day);
+    icons[i] = secondaryIcons[i];
+  });
+  return icons.map((icon) => {
+    return <WeekIcon icon={icon} />;
+  });
+};
 
-export const WeekIcon: React.FC<{icon: any}> = (props) => {
-    return (
-        <img src={props.icon} width={30} height={30} />
-    )
-}
+export const WeekIcon: React.FC<{ icon: any }> = (props) => {
+  return <img src={props.icon} width={30} height={30} />;
+};
 
 export default weekIcons;

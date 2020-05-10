@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import L from "leaflet";
+import L, { marker } from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { Map, TileLayer } from "react-leaflet";
 import iconRetinaUrl from "leaflet/dist/images/marker-icon-2x.png";
@@ -10,8 +10,8 @@ import { ShopType } from "../Shop/shop";
 import { objectSort } from "../../helper/objectSort";
 
 const mapStyle: React.CSSProperties = {
-  height: "70vh",
-  width: "70vw",
+  height: "100vh",
+  width: "100vw",
 };
 
 const rewriteIconState = () => {
@@ -32,17 +32,6 @@ type GourmetMapProps = {
   parentShops: Array<ShopType>;
   onMouseMorker: number;
 };
-
-function getMarkerInfo(shops: Array<ShopType>) {
-  const markers = shops.map((shop) => {
-    return {
-      position: L.latLng(shop.geocode.lat, shop.geocode.lng),
-      popup: shop.name,
-      iconKind: "cake-red",
-    };
-  });
-  return markers;
-}
 
 const GourmetMap: React.FC<GourmetMapProps> = (props) => {
   const zoomValue = props.zoomValue;
@@ -77,6 +66,17 @@ const GourmetMap: React.FC<GourmetMapProps> = (props) => {
     return L.latLng([lat / markers.length, lng / markers.length]);
   }
 
+  function getMarkerInfo(shops: Array<ShopType>): Array<MarkerType> {
+    const markers = shops.map((shop) => {
+      return {
+        position: L.latLng(shop.geocode.lat, shop.geocode.lng),
+        popup: shop.name,
+        iconKind: "cake-red",
+      };
+    });
+    return markers;
+  }
+
   rewriteIconState();
 
   useEffect(() => {
@@ -92,10 +92,16 @@ const GourmetMap: React.FC<GourmetMapProps> = (props) => {
       setOldShops(() => {
         return newShops;
       });
-      setCenterPosition(() => {
-        return locationFound ? centerPosition : calcCenterPositon(markers);
-      });
-      mapRef.current.leafletElement.setView(centerPosition, zoomValue);
+      const latLngBounds = L.latLngBounds(markers.map((marker) => marker.position));
+      if (latLngBounds !== null) {
+        mapRef.current.leafletElement.fitBounds(latLngBounds, { padding: [50, 50] });
+        console.log(latLngBounds);
+      } else {
+        setCenterPosition(() => {
+          return locationFound ? centerPosition : calcCenterPositon(markers);
+        });
+        mapRef.current.leafletElement.setView(centerPosition, zoomValue);
+      }
     }
   });
 

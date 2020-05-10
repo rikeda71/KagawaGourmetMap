@@ -12,22 +12,12 @@ type MainViewProps = {
   params?: { query?: string };
 };
 
-function getMarkerInfo(shops: Array<ShopType>) {
-  const markers = shops.map((shop) => {
-    return {
-      position: L.latLng(shop.geocode.lat, shop.geocode.lng),
-      popup: shop.name,
-      iconKind: "cake-red",
-    };
-  });
-  return markers;
-}
-
 const MainView: React.FC<MainViewProps> = (props) => {
   const url = props.request_url;
   const params = props.params;
   const [shops, setShops] = useState<Array<ShopType>>([]);
   const [markers, setMarkers] = useState<Array<MarkerType>>([]);
+  const [onMounseMorker, setOnMounseMorker] = useState<number>(-1);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -45,10 +35,16 @@ const MainView: React.FC<MainViewProps> = (props) => {
       <Container maxWidth="xl">
         <Grid container direction="row" justify="center" alignItems="center" spacing={2}>
           <Grid item xs={3}>
-            <Shops shops={shops} key="shops" />
+            <Shops shops={shops} setOnMouseMorker={setOnMounseMorker} key="shops" />
           </Grid>
           <Grid item xs={9}>
-            <GourmetMap zoomValue={13} markers={markers} setMarkers={setMarkers} parentShops={shops} />
+            <GourmetMap
+              zoomValue={13}
+              markers={markers}
+              setMarkers={setMarkers}
+              parentShops={shops}
+              onMouseMorker={onMounseMorker}
+            />
           </Grid>
         </Grid>
       </Container>

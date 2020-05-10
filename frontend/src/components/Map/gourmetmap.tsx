@@ -30,6 +30,7 @@ type GourmetMapProps = {
   markers: Array<MarkerType>;
   setMarkers: Function;
   parentShops: Array<ShopType>;
+  onMouseMorker: number;
 };
 
 function getMarkerInfo(shops: Array<ShopType>) {
@@ -47,7 +48,7 @@ const GourmetMap: React.FC<GourmetMapProps> = (props) => {
   const zoomValue = props.zoomValue;
   const [centerPosition, setCenterPosition] = useState<L.LatLng>(L.latLng([0, 0]));
   const [oldShops, setOldShops] = useState<Array<ShopType>>([]);
-  let mapRef: React.MutableRefObject<any> = useRef(null);
+  const mapRef = useRef(null);
 
   function calcCenterPositon(markers: Array<MarkerType>) {
     let lat = 0;
@@ -91,7 +92,7 @@ const GourmetMap: React.FC<GourmetMapProps> = (props) => {
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
         />
-        <Markers markers={props.markers} centerPosition={centerPosition} />
+        <Markers markers={props.markers} centerPosition={centerPosition} onMouseMorker={props.onMouseMorker} />
       </Map>
     </div>
   );

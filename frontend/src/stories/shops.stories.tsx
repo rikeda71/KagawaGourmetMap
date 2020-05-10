@@ -14,7 +14,7 @@ const atoms = storiesOf("Atoms", module);
 atoms
   .addDecorator(withKnobs)
   .add("Shop-card-format", () => (
-    <Card>
+    <Card variant="outlined">
       <CardContent>
         <Typography variant="h5" component="h1">
           {"ルーヴ"}
@@ -23,7 +23,7 @@ atoms
     </Card>
   ))
   .add("pointStars", () => <div>{pointStar(3.5)}</div>)
-  .add("weekIcons", () => <div>{weekIcons([{ day: "monday", startTime: "10:00", endTime: "19:00" }])}</div>);
+  .add("weekIcons", () => <div>{weekIcons([{ day: "monday", startTime: "10:00", lastTime: "19:00" }])}</div>);
 
 const molecules = storiesOf("Molecules", module);
 molecules

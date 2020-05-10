@@ -1,15 +1,15 @@
 import React from "react";
 import { Shop, ShopType } from "./shop";
-import { Scrollbars } from "react-custom-scrollbars";
+import { List } from "@material-ui/core";
 
-const Shops: React.FC<{ shops: Array<ShopType>; setOnMouseMorker: Function }> = (props) => {
+const Shops: React.FC<{ shops: Array<ShopType>; setOnMouseMorker?: Function }> = (props) => {
   const shops = props.shops;
   return (
-    <Scrollbars style={{ width: "30vw", height: "70vh" }} key="scrollbar">
+    <List style={{ maxWidth: "25vw", maxHeight: "100vh", overflow: "auto" }}>
       {shops.map((shop) => {
         return <Shop {...shop} key={shop.name + shop.shopId} setOnMouseMorker={props.setOnMouseMorker} />;
       })}
-    </Scrollbars>
+    </List>
   );
 };
 

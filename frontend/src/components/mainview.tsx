@@ -5,11 +5,16 @@ import Shops from "./Shop/shops";
 import { ShopType } from "./Shop/shop";
 import GourmetMap from "./Map/gourmetmap";
 import { MarkerType } from "./Map/marker";
-import { Container, Grid } from "@material-ui/core";
+import { Container, Grid, makeStyles } from "@material-ui/core";
 
 type MainViewProps = {
   request_url: string;
   params?: { query?: string };
+};
+
+const gridStyle: React.CSSProperties = {
+  padding: "2px",
+  marginBottom: "auto",
 };
 
 const MainView: React.FC<MainViewProps> = (props) => {
@@ -34,10 +39,10 @@ const MainView: React.FC<MainViewProps> = (props) => {
     <div id="main">
       <Container maxWidth="xl">
         <Grid container direction="row" justify="center" alignItems="center" spacing={2}>
-          <Grid item xs={3}>
+          <Grid item xs={3} style={gridStyle}>
             <Shops shops={shops} setOnMouseMorker={setOnMounseMorker} key="shops" />
           </Grid>
-          <Grid item xs={9}>
+          <Grid item xs={9} style={gridStyle}>
             <GourmetMap
               zoomValue={13}
               markers={markers}

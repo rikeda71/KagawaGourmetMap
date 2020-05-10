@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import Card from "@material-ui/core/Card";
 import { CardContent, Typography, makeStyles, CardActionArea } from "@material-ui/core";
 import weekIcons from "./weekicons";
@@ -21,12 +21,12 @@ export type ShopType = {
   times?: Array<DateType>;
   point?: number;
   geocode: LatLng;
-  setOnMouseMorker: Function;
+  setOnMouseMorker?: Function;
 };
 
 const cardStyle = makeStyles({
   card: {
-    margin: "0 2px",
+    width: "100%",
   },
 });
 
@@ -39,19 +39,22 @@ export const Shop: React.FC<ShopType> = (props) => {
       }}
       key={props.shopId}
       className={classes.card}
-      // ここで親のstateを変更し，markerに反映
       onMouseEnter={() => {
         console.log("mouse over");
-        props.setOnMouseMorker(() => props.shopId);
+        if (!!props.setOnMouseMorker) {
+          props.setOnMouseMorker(() => props.shopId);
+        }
       }}
       onMouseLeave={() => {
         console.log("mouse leave");
-        props.setOnMouseMorker(() => 0);
+        if (!!props.setOnMouseMorker) {
+          props.setOnMouseMorker(() => 0);
+        }
       }}
     >
-      <Card key={props.shopId}>
+      <Card key={props.shopId} variant="outlined">
         <CardContent key={props.shopId}>
-          <Typography variant="h5" component="h1">
+          <Typography variant="h5" component="h1" key={props.shopId}>
             {props.name}
           </Typography>
           {pointStar(props.point)}

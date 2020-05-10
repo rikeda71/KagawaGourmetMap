@@ -11,7 +11,7 @@ import { objectSort } from "../../helper/objectSort";
 
 const mapStyle: React.CSSProperties = {
   height: "100vh",
-  width: "100vw",
+  width: "80vw",
 };
 
 const rewriteIconState = () => {

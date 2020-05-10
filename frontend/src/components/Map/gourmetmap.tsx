@@ -47,8 +47,22 @@ function getMarkerInfo(shops: Array<ShopType>) {
 const GourmetMap: React.FC<GourmetMapProps> = (props) => {
   const zoomValue = props.zoomValue;
   const [centerPosition, setCenterPosition] = useState<L.LatLng>(L.latLng([0, 0]));
+  const [currentPosition, setCurrentPosition] = useState<L.LatLng>(L.latLng([0, 0]));
   const [oldShops, setOldShops] = useState<Array<ShopType>>([]);
+  const [locationFound, setLocationFound] = useState<Boolean>(false);
   const mapRef = useRef(null);
+
+  async function getGeoLoc(e) {
+    await navigator.geolocation.getCurrentPosition(
+      (p) => {
+        setLocationFound(true);
+        setCurrentPosition(L.latLng([p.coords.latitude, p.coords.longitude]));
+      },
+      (p) => {
+        setLocationFound(false);
+      }
+    );
+  }
 
   function calcCenterPositon(markers: Array<MarkerType>) {
     let lat = 0;
@@ -79,7 +93,7 @@ const GourmetMap: React.FC<GourmetMapProps> = (props) => {
         return newShops;
       });
       setCenterPosition(() => {
-        return calcCenterPositon(markers);
+        return locationFound ? centerPosition : calcCenterPositon(markers);
       });
       mapRef.current.leafletElement.setView(centerPosition, zoomValue);
     }
@@ -87,12 +101,26 @@ const GourmetMap: React.FC<GourmetMapProps> = (props) => {
 
   return (
     <div id="map">
-      <Map ref={mapRef} zoom={zoomValue} center={centerPosition} style={mapStyle} setView={false}>
+      <Map
+        ref={mapRef}
+        zoom={zoomValue}
+        center={centerPosition}
+        style={mapStyle}
+        setView={false}
+        onviewreset={(e) => {
+          getGeoLoc(e);
+        }}
+      >
         <TileLayer
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
         />
-        <Markers markers={props.markers} centerPosition={centerPosition} onMouseMorker={props.onMouseMorker} />
+        <Markers
+          markers={props.markers}
+          currentPosition={currentPosition}
+          setCurrentPosition={setCurrentPosition}
+          onMouseMorker={props.onMouseMorker}
+        />
       </Map>
     </div>
   );

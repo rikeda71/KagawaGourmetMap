@@ -6,7 +6,8 @@ import cakeImage from "../../assets/cake-red.png";
 
 export type MarkersPropsType = {
   markers: Array<MarkerType>;
-  centerPosition: L.LatLng;
+  currentPosition?: L.LatLng;
+  setCurrentPosition?: Function;
   onMouseMorker: number;
 };
 
@@ -84,23 +85,21 @@ const MyMarker: React.FC<{ marker: MarkerType; onMouseMarker: number; id: number
 
 export const Markers: React.FC<MarkersPropsType> = (props) => {
   const markers: Array<MarkerType> = props.markers;
-  const [centerPosition, setCenterPosition] = useState<L.LatLng>(L.latLng([0, 0]));
+  const currentMarkerRef = useRef(null);
 
   useEffect(() => {
-    if (JSON.stringify(objectSort(props.centerPosition)) !== JSON.stringify(objectSort(centerPosition))) {
-      setCenterPosition(() => {
-        return props.centerPosition;
-      });
-    }
+    currentMarkerRef.current.leafletElement.setLatLng(props.currentPosition);
   });
   return (
     <div id="markers">
       {markers.map((marker, i) => {
         return <MyMarker marker={marker} onMouseMarker={props.onMouseMorker} key={i} id={i + 1} />;
       })}
-      <Marker position={centerPosition} key="currentPos">
-        <Popup>{"現在地"}</Popup>
-      </Marker>
+      {!!props.currentPosition && (
+        <Marker ref={currentMarkerRef} position={props.currentPosition} key="currentPos">
+          <Popup>{"現在地"}</Popup>
+        </Marker>
+      )}
     </div>
   );
 };

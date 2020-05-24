@@ -29,9 +29,6 @@ const weekIcons = (times: Array<DateType>) => {
     SecondarySaturday,
   ];
   const icons = Object.assign([], grayIcons);
-  if (!times) {
-    return weekIcons;
-  }
   times.forEach((time) => {
     let i = weekNames.indexOf(time.day);
     icons[i] = secondaryIcons[i];

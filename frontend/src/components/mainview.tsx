@@ -5,7 +5,8 @@ import Shops from "./Shop/shops";
 import { ShopType } from "./Shop/shop";
 import GourmetMap from "./Map/gourmetmap";
 import { MarkerType } from "./Map/marker";
-import { Container, Grid, makeStyles } from "@material-ui/core";
+import { Container, Grid } from "@material-ui/core";
+import SearchBar from "./SearchBar/searchbar";
 
 type MainViewProps = {
   request_url: string;
@@ -29,6 +30,7 @@ const MainView: React.FC<MainViewProps> = (props) => {
       await axios
         .get<Array<ShopType>>(url + "/shop", { params: typeof params !== "undefined" ? params : null })
         .then((res) => {
+          console.log(res.data);
           setShops(res.data);
         });
     };
@@ -38,11 +40,14 @@ const MainView: React.FC<MainViewProps> = (props) => {
   return (
     <div id="main">
       <Container maxWidth="xl">
+        <Grid style={gridStyle}>
+          <SearchBar />
+        </Grid>
         <Grid container direction="row" justify="center" alignItems="center" spacing={2}>
-          <Grid item xs={3} style={gridStyle}>
+          <Grid item style={gridStyle}>
             <Shops shops={shops} setOnMouseMorker={setOnMounseMorker} key="shops" />
           </Grid>
-          <Grid item xs={9} style={gridStyle}>
+          <Grid item style={gridStyle}>
             <GourmetMap
               zoomValue={13}
               markers={markers}

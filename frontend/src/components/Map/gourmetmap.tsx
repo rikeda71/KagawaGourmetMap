@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import L, { marker } from "leaflet";
+import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { Map, TileLayer } from "react-leaflet";
 import iconRetinaUrl from "leaflet/dist/images/marker-icon-2x.png";
@@ -10,8 +10,12 @@ import { ShopType } from "../Shop/shop";
 import { objectSort } from "../../helper/objectSort";
 
 const mapStyle: React.CSSProperties = {
-  height: "100vh",
-  width: "80vw",
+  height: "80vh",
+  width: "50vw",
+  marginTop: "8px",
+  marginBottom: "32px",
+  marginRight: "8px",
+  marginLeft: "8px",
 };
 
 const rewriteIconState = () => {

@@ -1,7 +1,6 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { Marker, Popup } from "react-leaflet";
 import L from "leaflet";
-import { objectSort } from "../../helper/objectSort";
 import cakeImage from "../../assets/cake-red.png";
 
 export type MarkersPropsType = {

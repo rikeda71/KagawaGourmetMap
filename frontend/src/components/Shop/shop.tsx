@@ -26,7 +26,11 @@ export type ShopType = {
 
 const cardStyle = makeStyles({
   card: {
-    width: "100%",
+    marginBottom: "8px",
+  },
+  cardMainContent: {
+    padding: "8px",
+    paddingLeft: "4px",
   },
 });
 
@@ -53,8 +57,8 @@ export const Shop: React.FC<ShopType> = (props) => {
       }}
     >
       <Card key={props.shopId} variant="outlined">
-        <CardContent key={props.shopId}>
-          <Typography variant="h5" component="h1" key={props.shopId}>
+        <CardContent key={props.shopId} className={classes.cardMainContent}>
+          <Typography variant="h6" component="h1" key={props.shopId}>
             {props.name}
           </Typography>
           {pointStar(props.point)}

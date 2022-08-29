@@ -32,9 +32,12 @@ services:
    POSTGRES_USER: app-user
    POSTGRES_PASSWORD: Passw0rd
    POSTGRES_DB: test1
+  container_name: ps-container
   volumes:
    - ./docker/db/initdb.d:/docker-entrypoint-initdb.d
-   - ./docker//db/:/var/lib/postgresql/data
+   - ./postgresql:/var/lib/postgresql/data
+  networks:
+    - kagawa-gourmet-map-net
  swagger-ui:
   image: swaggerapi/swagger-ui
   environment:
@@ -60,4 +63,3 @@ services:
 networks:
  kagawa-gourmet-map-net:
   driver: bridge
-
